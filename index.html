@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BITR工作室 - 创新科技解决方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            color: white;
+            padding: 0.8rem 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+        }
+
+        .header.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(26, 35, 126, 0.95);
+            backdrop-filter: blur(10px);
+            transform: scale(0.95);
+        }
+
+        .header.scrolled .logo {
+            max-width: 60px;
+            margin-bottom: 0;
+            display: inline-block;
+            vertical-align: middle;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled h1 {
+            font-size: 1.2rem;
+            margin: 0;
+            display: inline-block;
+            vertical-align: middle;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled p {
+            display: none;
+            transition: opacity 0.3s ease-out;
+        }
+
+        .header.scrolled .nav-menu {
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 2rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled .nav-menu ul {
+            gap: 1rem;
+            transition: gap 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled .nav-menu a {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.9rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo {
+            max-width: 120px;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin: 0.2rem 0;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            margin: 0.2rem 0;
+        }
+
+        .nav-menu {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            transition: gap 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page {
+            display: none;
+            padding-top: 180px;
+            min-height: 100vh;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1a237e;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .about-text {
+            flex: 1.5;
+            padding-right: 2rem;
+        }
+
+        .about-image {
+            flex: 1;
+            max-width: 45%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .partners {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .partner-item {
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .partner-desc {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            width: 200px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .partner-logos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+            align-items: start;
+        }
+
+        .partner-logo {
+            max-width: 150px;
+            height: auto;
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        .contact {
+            background: #f5f5f5;
+            padding: 4rem 0;
+        }
+
+        .footer {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .service-item {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background: #1a237e;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background: #0d47a1;
+        }
+
+        @media (max-width: 768px) {
+            .header.scrolled .nav-menu {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .header.scrolled .logo,
+            .header.scrolled h1 {
+                display: block;
+                margin: 0 auto;
+            }
+
+            .nav-menu ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .about-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .about-image {
+                max-width: 100%;
+            }
+            
+            .partner-logos {
+                flex-wrap: wrap;
+            }
+        }
+
+        .main-content {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .partner-tip {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0.5rem 0 1.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <img src="北京BITR.png" alt="BITR工作室Logo" class="logo">
+            <h1>BITR工作室</h1>
+            <p>创新科技，引领未来</p>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home" class="active">首页</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#services">服务项目</a></li>
+                    <li><a href="#team">团队介绍</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="page active">
+            <div class="container">
+                <div class="section">
+                    <h2 class="section-title">欢迎来到BITR工作室</h2>
+                    <div class="about-content">
+                        <div class="about-text">
+                            <p>BITR工作室是一家专注于创新科技解决方案的团队。我们致力于为客户提供最优质的技术服务，帮助他们在数字化时代保持竞争力。</p>
+                        </div>
+                        <img src="BITR海报2.png" alt="BITR工作室海报" class="about-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我们 -->
+        <section id="about" class="page">
+            <div class="container">
+                <div class="section">
+                    <h2 class="section-title">关于我们</h2>
+                    <div class="about-content">
+                        <div class="about-text">
+                            <p>BITR工作室成立于2023年，是一家充满活力的科技创新团队。我们专注于：</p>
+                            <ul style="margin-top: 1rem; margin-left: 2rem;">
+                                <li>人工智能与机器学习</li>
+                                <li>大数据分析与处理</li>
+                                <li>物联网解决方案</li>
+                                <li>区块链技术应用</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="partners">
+                        <h3>合作伙伴</h3>
+                        <p class="partner-tip">👆 将鼠标悬停在logo上，查看彩色效果</p>
+                        <div class="partner-logos">
+                            <div class="partner-item">
+                                <img src="小米logo.jpg" alt="小米" class="partner-logo">
+                                <p class="partner-desc">小米科技 - 全球领先的智能硬件和电子产品制造商</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="特斯拉logo.jpeg" alt="特斯拉" class="partner-logo">
+                                <p class="partner-desc">特斯拉 - 电动汽车和清洁能源领域的创新领导者</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="北京BITR.png" alt="北京BITR" class="partner-logo">
+                                <p class="partner-desc">北京BITR - 我们的战略合作伙伴，共同推动技术创新</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" class="partner-logo">
+                                <p class="partner-desc">Google - 全球最大的搜索引擎和人工智能技术提供商</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/1200px-Microsoft_logo_%282012%29.svg.png" alt="Microsoft" class="partner-logo">
+                                <p class="partner-desc">Microsoft - 全球领先的软件和云计算服务提供商</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1200px-Apple_logo_black.svg.png" alt="Apple" class="partner-logo">
+                                <p class="partner-desc">Apple - 创新科技产品的设计者和制造商</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/2560px-Amazon_Web_Services_Logo.svg.png" alt="AWS" class="partner-logo">
+                                <p class="partner-desc">AWS - 全球最大的云计算服务平台</p>
+                            </div>
+                            <div class="partner-item">
+                                <img src="1.jpeg" alt="Intel" class="partner-logo">
+                                <p class="partner-desc">Intel - 全球领先的半导体和计算技术创新者</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 服务项目 -->
+        <section id="services" class="page">
+            <div class="container">
+                <div class="section">
+                    <h2 class="section-title">服务项目</h2>
+                    <div class="service-item">
+                        <h3>人工智能解决方案</h3>
+                        <p>提供智能算法开发、机器学习模型训练、自然语言处理等AI相关服务。</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>大数据分析</h3>
+                        <p>数据挖掘、商业智能分析、预测分析等大数据服务。</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>物联网开发</h3>
+                        <p>智能硬件开发、物联网平台搭建、传感器网络部署等服务。</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>区块链应用</h3>
+                        <p>区块链技术咨询、智能合约开发、去中心化应用开发等服务。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 团队介绍 -->
+        <section id="team" class="page">
+            <div class="container">
+                <div class="section">
+                    <h2 class="section-title">团队介绍</h2>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <h3>室长 - 赵墨轩</h3>
+                            <p>13岁，年轻有为的技术领导者。擅长人工智能和机器学习领域，带领团队不断创新突破。</p>
+                        </div>
+                        <div class="team-member">
+                            <h3>副室长 - 陈嘉义</h3>
+                            <p>17岁，经验丰富的技术专家。负责项目管理和技术架构设计，确保项目高质量交付。</p>
+                        </div>
+                        <div class="team-member">
+                            <h3>HR - 付敬轩</h3>
+                            <p>12岁，优秀的人力资源管理者。负责团队建设与人才发展，打造积极向上的团队文化。</p>
+                        </div>
+                        <div class="team-member">
+                            <h3>开发工程师 - 陈涛</h3>
+                            <p>15岁，全栈开发工程师。精通前后端技术，负责核心功能开发与系统优化。</p>
+                        </div>
+                        <div class="team-member">
+                            <h3>开发工程师 - 刘海逸</h3>
+                            <p>13岁，创新技术专家。专注于新技术研究与应用，推动团队技术创新。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系我们 -->
+        <section id="contact" class="page">
+            <div class="container">
+                <div class="section">
+                    <h2 class="section-title">联系我们</h2>
+                    <div class="contact-form">
+                        <div class="form-group">
+                            <label for="name">姓名</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">邮箱</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">留言</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">发送消息</button>
+                    </div>
+                    <p style="text-align: center; margin-top: 2rem;">邮箱：1344266350@qq.com</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 BITR工作室. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script>
+        // 页面切换功能
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                
+                // 更新导航菜单激活状态
+                document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+                link.classList.add('active');
+                
+                // 切换页面显示
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+
+                // 平滑滚动到顶部
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 滚动时改变header样式
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const header = document.querySelector('.header');
+                    const currentScroll = window.scrollY;
+                    
+                    if (currentScroll > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    </script>
+</body>
+</html> 
